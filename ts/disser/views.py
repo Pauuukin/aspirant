@@ -9,9 +9,23 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
+from .models import *
+from .forms import *
+
 
 # Create your views here.
 
 
 def main_page(request):
-    return render(request, 'disser/main.html')
+    return render(request, 'main.html')
+
+
+class ManufacturerAddView(CreateView):
+    model = Manufacturer
+    template_name = 'manufacturer_add.html'
+    form_class = ManufacturerAddForm
+
+    def get_context_data(self, **kwargs):
+        """передаем свой контекст"""
+        kwargs['manufaturer_list'] = Manufacturer.objects.all()
+        return super().get_context_data(**kwargs)

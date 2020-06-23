@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Оборудование
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="card bg-light mb-3 p-4" >
+        <form id="doc_add" method="post"  enctype="multipart/form-data" onsubmit="return showFileSize()">
+            {% csrf_token%}
+            {{form}}
+            <!--                <input type='submit' id='myAnchor' form="doc_add" value='Load' onclick='showFileSize();'>-->
+
+        </form>
+        <button form="doc_add" id='myAnchor' type="submit" class="btn btn-primary mt-3 mb-2" onclick='showFileSize();'>Отправить</button>
+    </div>
+</div>
+</div>
+{% endblock %}
