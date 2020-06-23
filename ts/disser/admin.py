@@ -4,7 +4,18 @@ from .models import *
 # Register your models here.
 
 
-admin.site.register(Manufacturer)
+class ManufacturerInline(admin.TabularInline):
+    model = Equipment
+    can_delete = False
+    verbose_name_plural = 'Оборудование'
+
+
+class ManufacturerAdmin(admin.ModelAdmin):
+    model = Manufacturer
+    inlines = (ManufacturerInline, )
+
+
+admin.site.register(Manufacturer, ManufacturerAdmin)
 admin.site.register(Equipment)
 admin.site.register(TechnicalParam)
 admin.site.register(TechnicalNozzle)
@@ -15,3 +26,5 @@ admin.site.register(Material)
 admin.site.register(Product)
 admin.site.register(TechnologicalMap)
 admin.site.register(PositionTP)
+
+
