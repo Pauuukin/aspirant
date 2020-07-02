@@ -151,7 +151,7 @@ class Product(models.Model):
     )
 
     color = models.CharField(verbose_name='Материал', max_length=256, choices=var_list)
-    product_tipe = models.CharField(verbose_name='Материал', max_length=256, choices=var_list_tipe)
+    product_tipe = models.CharField(verbose_name='Вид изделия', max_length=256, choices=var_list_tipe)
     name = models.CharField(verbose_name='Наименование изделия', max_length=256)
     nomenclature = models.CharField(verbose_name='Номенклатурный номер изделия', max_length=256)
     form = models.CharField(verbose_name='Тип формы', max_length=256)
