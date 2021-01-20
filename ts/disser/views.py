@@ -55,10 +55,14 @@ def calculate_page(request):
         context['count_1'] = request.POST.get('count_1', '90')
         context['count_2'] = request.POST.get('count_2', '10')
 
+        product = Product.objects.get(name=context['product'])
+
+        weight_product = float(context['count'])*(int(product.net_weight)/1000)
+
         material1 = Material.objects.get(commodities=context['m1'])
         material2 = Material.objects.get(commodities=context['m2'])
-        context ['price_product'] = (float(context['count']) * float(context['count_1'])/100 * int(material1.price)
-                                     + float(context['count']) * float(context['count_2'])/100 * int(material2.price))
+        context ['price_product'] = (weight_product * float(context['count_1'])/100 * int(material1.price)
+                                     + weight_product * float(context['count_2'])/100 * int(material2.price))
 
         price_s = int(context['time_s']) * energy_price * 4.37
         context['price_s'] = round(price_s, 2)

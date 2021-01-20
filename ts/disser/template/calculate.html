@@ -6,25 +6,25 @@
 
 
 {% block content %}
-<hr><hr><hr>
+<hr>
 
 <div class="container">
     <h3>Итог рассчета: </h3>
-<hr>
+    <hr>
     <div class="row">
         <div class="col-3">
             <table class="table table-border">
                 <td>
-                    <tr><p>Изделие: {{product}}</p></tr>
-                    <tr><p>Материал 1: {{m1}}</p></tr>
-                    <tr><p>Материал 2: {{m2}}</p></tr>
-                    <tr><p>Штук в партии: {{count}}</p></tr>
-                    <tr><p>Гнездность: {{g}}</p></tr>
+                    <tr><p>Изделие: <br><b>{{product}}</b></p></tr>
+                    <tr><p>Материал 1: <b>{{m1}}</b></p></tr>
+                    <tr><p>Материал 2: <b>{{m2}}</b></p></tr>
+                    <tr><p>Штук в партии: <b>{{count}}</b></p></tr>
+                    <tr><p>Гнездность: <b>{{g}}</b></p></tr>
                 </td>
             </table>
             <h4>Оборудование:</h4>
             <div class="card border-warning ">
-                <b><u><p>{{eq_l}}</p></u></b>
+                <b><u><p class="text-center">{{eq_l}}</p></u></b>
                 <ul>
                     <li><p>Литьевая машина</p></li>
                     <li><p>Расход(кВт): 48.5</p></li>
@@ -35,7 +35,7 @@
             </div>
             <div class="card border-warning ">
 
-                <b><u><p>{{eq_s}}</p></u></b>
+                <b><u><p class="text-center">{{eq_s}}</p></u></b>
                 <ul>
                     <li><p>Сушильная камера</p></li>
                     <li><p>Расход(кВт): 4.37</p></li>
@@ -44,7 +44,7 @@
                 </ul>
             </div>
             <div class="card border-warning ">
-                <b><u><p>{{eq_d}}</p></u></b>
+                <b><u><p class="text-center">{{eq_d}}</p></u></b>
                 <ul>
                     <li><p>Дробильная машина</p></li>
                     <li><p>Расход(кВт): 15</p></li>
@@ -60,10 +60,7 @@
                     <td>Сырье и материалы ({{m1}} +{{m2}}):</td>
                     <td>{{price_product}}</td>
                 </tr>
-                <tr>
-                    <td>{{eq_l}}</td>
-                    <td>4095</td>
-                </tr>
+
                 <tr>
                     <td>Оборудование: {{eq_s}}</td>
                     <td>{{price_s}}</td>
@@ -71,6 +68,10 @@
                 <tr>
                     <td>Оборудование: {{eq_d}}</td>
                     <td>{{price_d}}</td>
+                </tr>
+                <tr>
+                    <td>Оборудование:{{eq_l}}</td>
+                    <td>4095.11</td>
                 </tr>
                 <tr>
                     <td>Амортизация оборудования</td>
@@ -114,6 +115,6 @@
         </div>
     </div>
 </div>
-</div>
+
 {% endblock %}
 
