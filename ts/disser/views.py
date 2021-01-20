@@ -57,7 +57,10 @@ def calculate_page(request):
 
         product = Product.objects.get(name=context['product'])
 
-        weight_product = float(context['count'])*(int(product.net_weight)/1000)
+        weight_product = float(context['count'])*(int(product.net_weight)/1000)*1.03
+
+        time_lit = (64.6*int(context['count']))/60/60
+        context['time_lit'] = round(time_lit)
 
         material1 = Material.objects.get(commodities=context['m1'])
         material2 = Material.objects.get(commodities=context['m2'])
@@ -70,17 +73,20 @@ def calculate_page(request):
         price_d = int(context['time_d']) * energy_price * 15
         context['price_d'] = round(price_d, 2)
 
+        price_lit = int(time_lit) * energy_price * 48.5
+        context['price_lit'] = round(price_lit, 2)
+
         wages_drob = wages['drob'] * int(context['time_d'])
         context['wages_drob'] = round(wages_drob, 2)
 
         wages_sush = wages['sush'] * int(context['time_s'])
         context['wages_sush'] = round(wages_sush, 2)
 
-        wages_lit = wages['lit'] * 18
+        wages_lit = wages['lit'] * time_lit
         context['wages_lit'] = round(wages_lit, 2)
 
         sum= wages_lit + wages_sush + wages_drob + price_d + price_s + \
-             float(context['price_product']) +4095 +673 +1998 +131 + 1034
+             float(context['price_product']) +price_lit +673 +1998 +131 + 1034
         context['sum'] = round(sum, 2)
 
         price_unit = sum / int(context['count'])
