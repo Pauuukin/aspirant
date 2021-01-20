@@ -1,0 +1,119 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Оборудование
+{% endblock %}
+
+
+{% block content %}
+<hr><hr><hr>
+
+<div class="container">
+    <h3>Итог рассчета: </h3>
+<hr>
+    <div class="row">
+        <div class="col-3">
+            <table class="table table-border">
+                <td>
+                    <tr><p>Изделие: {{product}}</p></tr>
+                    <tr><p>Материал 1: {{m1}}</p></tr>
+                    <tr><p>Материал 2: {{m2}}</p></tr>
+                    <tr><p>Штук в партии: {{count}}</p></tr>
+                    <tr><p>Гнездность: {{g}}</p></tr>
+                </td>
+            </table>
+            <h4>Оборудование:</h4>
+            <div class="card border-warning ">
+                <b><u><p>{{eq_l}}</p></u></b>
+                <ul>
+                    <li><p>Литьевая машина</p></li>
+                    <li><p>Расход(кВт): 48.5</p></li>
+                    <li><p>Время цикла(с): 64.6</p></li>
+                    <li><p>Норма расхода (г\шт): 1.03</p></li>
+                    <li><p>Общее время работы(ч): 18</p></li>
+                </ul>
+            </div>
+            <div class="card border-warning ">
+
+                <b><u><p>{{eq_s}}</p></u></b>
+                <ul>
+                    <li><p>Сушильная камера</p></li>
+                    <li><p>Расход(кВт): 4.37</p></li>
+                    <li><p>Температура(цельсия): {{temp}}</p></li>
+                    <li><p>Общее время работы(ч): {{time_s}}</p></li>
+                </ul>
+            </div>
+            <div class="card border-warning ">
+                <b><u><p>{{eq_d}}</p></u></b>
+                <ul>
+                    <li><p>Дробильная машина</p></li>
+                    <li><p>Расход(кВт): 15</p></li>
+                    <li><p>Общее время работы(ч): {{time_d}}</p></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-6">
+            <h4>Стоимость (на партию) в рублях: </h4>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td>Сырье и материалы ({{m1}} +{{m2}}):</td>
+                    <td>{{price_product}}</td>
+                </tr>
+                <tr>
+                    <td>{{eq_l}}</td>
+                    <td>4095</td>
+                </tr>
+                <tr>
+                    <td>Оборудование: {{eq_s}}</td>
+                    <td>{{price_s}}</td>
+                </tr>
+                <tr>
+                    <td>Оборудование: {{eq_d}}</td>
+                    <td>{{price_d}}</td>
+                </tr>
+                <tr>
+                    <td>Амортизация оборудования</td>
+                    <td>673</td>
+                </tr>
+                <tr>
+                    <td>З/П Дробильщик </td>
+                    <td>{{wages_drob}}</td>
+                </tr>
+                <tr>
+                    <td>З/П Литейщик </td>
+                    <td>{{wages_lit}}</td>
+                </tr>
+                <tr>
+                    <td>З/П Оператор С\К </td>
+                    <td>{{wages_sush}}</td>
+                </tr>
+                <tr>
+                    <td>З/П Технолог</td>
+                    <td>1998</td>
+                </tr>
+                <tr>
+                    <td>З/П Контролер </td>
+                    <td>131</td>
+                </tr>
+                <tr>
+                    <td>Общепроизводственные расходы(вода, аренда помещений)</td>
+                    <td>1034</td>
+                </tr>
+                <tr class="table-info">
+                    <td class="text-center">Итого(общие затраты):</td>
+                    <td>{{sum}}</td>
+                </tr>
+                <tr class="table-success">
+                    <td class="text-center">Цена единицы изделия(без накладных расходов):</td>
+                    <td>{{price_unit}}</td>
+                </tr>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+

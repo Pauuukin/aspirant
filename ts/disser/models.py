@@ -21,7 +21,12 @@ class Equipment(models.Model):
     """Оборудование"""
     manufacture = models.ForeignKey('Manufacturer', on_delete=models.CASCADE, related_name='equipment',
                                     verbose_name='Производитель')
-    genus = models.CharField(verbose_name='Тип\Вид оборудования', max_length=256)
+    var_list = (
+        ('tipe1', 'Машина для литья под давлением'),
+        ('tipe2', 'Дробилка'),
+        ('tipe3', 'Сушилка'),
+    )
+    genus = models.CharField(verbose_name='Тип\Вид оборудования', choices=var_list, max_length=256)
     name_e = models.CharField(verbose_name='Название оборудования', max_length=256)
 
     class Meta:
@@ -31,6 +36,7 @@ class Equipment(models.Model):
 
     def __str__(self):
         return self.name_e
+
 
 
 class TechnicalParam(models.Model):
@@ -126,13 +132,13 @@ class Material(models.Model):
         verbose_name_plural = 'Сырье'
 
     def __str__(self):
-        return self.name
+        return self.commodities
 
 
 class Product(models.Model):
     material = models.ForeignKey('Material', on_delete=models.CASCADE, related_name='product', verbose_name='Материал')
     var_list = (
-        ('color1', 'Цвет 1'),
+        ('color1', 'Не имеет значения'),
         ('color2', 'Цвет 2'),
         ('color3', 'Цвет 3'),
         ('color4', 'Цвет 4'),
@@ -143,11 +149,11 @@ class Product(models.Model):
     var_list_tipe = (
         ('1', 'Таз'),
         ('2', 'Ведро'),
-        ('3', 'Тип 3'),
-        ('4', 'Тип 4'),
-        ('5', 'Тип 5'),
-        ('6', 'Тип 6'),
-        ('7', 'Тип 7'),
+        ('3', 'Техническая тара'),
+        ('4', 'Декор-ый технический поднос'),
+        ('5', 'Мусорное ведро'),
+        ('6', 'Щелевой колпачок'),
+        ('7', 'Декор-ый цветной горшок'),
     )
 
     color = models.CharField(verbose_name='Материал', max_length=256, choices=var_list)

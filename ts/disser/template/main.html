@@ -9,28 +9,34 @@
 <div class="m-4">
     <h3>Рассчет экономических показателей изготовления изделия</h3>
     <hr>
-
-    <div class="row">
+    <form method="post" enctype="multipart/form-data" action="{% url 'calculate_page_url' %}">
+    {% csrf_token %}
+        <div class="row">
 
         <div class="col-4">
             <h3 class="text-center">Изделие:</h3>
             <h4>Выберите изделие:</h4>
-            <select class="form-control mt-2 mb-3">
-                <option>Техническая емкость 10л.</option>
-                <option>Техническая емкость 15л.</option>
+            <select class="form-contr select ol mt-2 mb-3" name="product">
+                {% for pr in Product %}
+                <option>{{pr.name}}</option>
+                {% endfor %}
             </select>
             <hr>
             <div class="row">
                 <div class="col">
                     <p>Материал 1</p>
-                    <select class="form-control mt-2 mb-3">
-                        <option>ПЭНДдр</option>
+                    <select class="form-control mt-2 mb-3" name="m1">
+                        {% for m in Material %}
+                        <option>{{m.commodities}}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col">
                     <p>Материал 2</p>
-                    <select class="form-control mt-2 mb-3">
-                        <option>ПЭТфлексы 10%</option>
+                    <select class="form-control mt-2 mb-3" name="m2">
+                        {% for m in Material %}
+                        <option>{{m.commodities}}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -39,16 +45,16 @@
             <div class="row">
 
                 <div class="col">
-                    <input class="form-control">
+                    <input class="form-control" name="count_1">
                 </div>
                 <div class="col">
-                    <input class="form-control">
+                    <input class="form-control" name="count_2">
                 </div>
             </div>
             <hr>
-            <p> Требуется покраска: <input type="checkbox" name="a" value="1">  </p>
-            <p>Штук в партии:  <input class="form-control"></p>
-            <p>Гнездность:  <input class="form-control"></p>
+            <p> Требуется покраска: <input type="checkbox" name="a" value="1"> (В разработке) </p>
+            <p>Штук в партии:  <input class="form-control" name="count"></p>
+            <p>Гнездность:  <input class="form-control" name="g"></p>
         </div>
 
         <div class="col-1"></div>
@@ -56,140 +62,67 @@
             <h3 class="text-center">Оборудование:</h3>
             <div class="row">
                 <h4>Выберите оборудование:</h4>
-                <select class="form-control mt-2 mb-3">
-                    <option>SANDRETTO serie noce`s 395 (Italy)</option>
-                    <option></option>
+                <select class="form-control mt-2 mb-3" name="eq_l">
+                    {% for e in Equipment_l %}
+                    <option>{{e.name_e}}</option>
+                    {% endfor %}
                 </select>
                 <hr>
-                <div class="col-6 card border-info">
-                    <p> Требуется сушка: <input type="checkbox" name="a" value="1">  </p><br>
-                    <h5>Выберите оборудование:</h5>
-                    <select class="form-control mt-2 mb-3">
-                        <option>MORETTO</option>
-                        <option></option>
-                    </select>
-                    <p>Температура сушки (цельсия): <input class="form-control"></p>
-                    <p>Время сушки(часы): <input class="form-control"></p>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="card ">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne">
+                                Предварительная сушка
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne"  aria-expanded="false" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p> Требуется сушка: <input type="checkbox" name="s_check" value="1">  </p><br>
+                            <h5>Выберите оборудование:</h5>
+                            <select class="form-control mt-2 mb-3" name="eq_s">
+                                {% for e in Equipment_s %}
+                                <option>{{e.name_e}}</option>
+                                {% endfor %}
+
+                            </select>
+                            <p>Температура сушки (цельсия): <input class="form-control" name="temp"></p>
+                            <p>Время сушки(часы): <input class="form-control" name="time_s"></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-6 card border-info">
-                    <p> Требуется дробление: <input type="checkbox" name="a" value="1">  </p><br>
-                    <h5>Выберите оборудование:</h5>
-                    <select class="form-control mt-2 mb-3">
-                        <option>ИПР-300</option>
-                        <option></option>
-                    </select>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-controls="collapseTwo">
+                                Дробление материала
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" aria-expanded="false" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p> Требуется дробление: <input type="checkbox" name="d_check" value="1">  </p><br>
+                            <h5>Выберите оборудование:</h5>
+                            <select class="form-control mt-2 mb-3" name="eq_d">
+                                {% for e in Equipment_d %}
+                                <option>{{e.name_e}}</option>
+                                {% endfor %}
+                            </select>
+                            <p>Время дробления(часы): <input class="form-control" name="time_d"></p>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
-            <a href="#" class="btn btn-info btn-block m-4">Рассчитать</a>
+
+
+
+            <button class="btn btn-info btn-block m-4" type="submit">Рассчитать</button>
         </div>
+
     </div>
-    <hr><hr><hr>
-    <h3>Итог рассчета:</h3>
-    <hr>
-    <div class="row">
-        <div class="col-3">
-            <table class="table table-border">
-                <td>
-                    <tr><p>Изделие: Техническая емкость 10л.</p></tr>
-                    <tr><p>Материал 1: ПЭНДдр</p></tr>
-                    <tr><p>Материал 2: ПЭТфлексы 10%</p></tr>
-                    <tr><p>Штук в партии: 1000</p></tr>
-                    <tr><p>Гнездность: 1</p></tr>
-                </td>
-            </table>
-            <h4>Оборудование:</h4>
-            <div class="card border-warning ">
-                <b><u><p>SANDRETTO serie noce`s 395 (Italy)</p></u></b>
-                <ul>
-                    <li><p>Литьевая машина</p></li>
-                    <li><p>Расход(кВт): 48.5</p></li>
-                    <li><p>Время цикла(с): 64.6</p></li>
-                    <li><p>Норма расхода (г\шт): 1.03</p></li>
-                    <li><p>Общее время работы(ч): 18</p></li>
-                </ul>
-            </div>
-            <div class="card border-warning ">
-
-                <b><u><p>MORETTO</p></u></b>
-                <ul>
-                    <li><p>Сушильная камера</p></li>
-                    <li><p>Расход(кВт): 4.37</p></li>
-                    <li><p>Температура(цельсия): 160</p></li>
-                    <li><p>Общее время работы(ч): 8</p></li>
-                </ul>
-            </div>
-            <div class="card border-warning ">
-                <b><u><p>ИПР-300</p></u></b>
-                <ul>
-                    <li><p>Дробильная машина</p></li>
-                    <li><p>Расход(кВт): 15</p></li>
-                    <li><p>Общее время работы(ч): 1</p></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-6">
-            <h4>Стоимость (на партию) в рублях: </h4>
-            <table class="table table-bordered table-striped">
-                <tr>
-                    <td>Сырье и материалы:</td>
-                    <td>32064</td>
-                </tr>
-                <tr>
-                    <td>Оборудование: SANDRETTO serie noce`s 395 (Italy)</td>
-                    <td>4095</td>
-                </tr>
-                <tr>
-                    <td>Оборудование: MORETTO</td>
-                    <td>162,56</td>
-                </tr>
-                <tr>
-                    <td>Оборудование: ИПР-300</td>
-                    <td>69,75</td>
-                </tr>
-                <tr>
-                    <td>Амортизация оборудования</td>
-                    <td>673</td>
-                </tr>
-                <tr>
-                    <td>З/П Дробильщик </td>
-                    <td>111</td>
-                </tr>
-                <tr>
-                    <td>З/П Литейщик </td>
-                    <td>2160</td>
-                </tr>
-                <tr>
-                    <td>З/П Оператор С\К </td>
-                    <td>888</td>
-                </tr>
-                <tr>
-                    <td>З/П Технолог</td>
-                    <td>1998</td>
-                </tr>
-                <tr>
-                    <td>З/П Контролер </td>
-                    <td>131</td>
-                </tr>
-                <tr>
-                    <td>Общепроизводственные расходы(вода, аренда помещений)</td>
-                    <td>1034</td>
-                </tr>
-                <tr class="table-info">
-                    <td class="text-center">Итого(общие затраты):</td>
-                    <td>43386.31</td>
-                </tr>
-                <tr class="table-success">
-                    <td class="text-center">Цена единицы изделия(без накладных расходов):</td>
-                    <td>43.39</td>
-                </tr>
-
-            </table>
-
-        </div>
-    </div>
+    </form>
 </div>
 {% endblock %}
-
