@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="m-4">
-    <h3>Рассчет экономических показателей изготовления изделия</h3>
+    <h3>Расчет экономических показателей изготовления изделия</h3>
     <hr>
     <form method="post" enctype="multipart/form-data" action="{% url 'calculate_page_url' %}">
     {% csrf_token %}
@@ -116,8 +116,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <button class="btn btn-info btn-block m-4" type="submit">Рассчитать</button>
         </div>

@@ -38,8 +38,8 @@ class Equipment(models.Model):
         return self.name_e
 
 
-
 class TechnicalParam(models.Model):
+    """Таблица с характеристиками оборудования"""
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE, related_name='equipment', verbose_name='Оборудование')
     energy_rate = models.CharField(verbose_name='Затрата энергии в час', max_length=40)
     useful_life = models.CharField(verbose_name='Период полезного использования в годах', max_length=40)
@@ -54,6 +54,7 @@ class TechnicalParam(models.Model):
 
 
 class TechnicalNozzle(models.Model):
+    """ Оснастка """
     name = models.CharField(verbose_name='Наименование оснастки', max_length=256)
     var_list = (
         ('tipe1','Тип 1'),
@@ -77,6 +78,7 @@ class TechnicalNozzle(models.Model):
 
 
 class OperationEquipment(models.Model):
+    """Оборудование, используемое на конкретной операции """
     equipment = models.ForeignKey('Equipment', on_delete=models.CASCADE, related_name='equipment_operation', verbose_name='Оборудование')
     technical_nozzle = models.ForeignKey('TechnicalNozzle', on_delete=models.CASCADE, related_name='nozzle_operation', verbose_name='Техническая оснастка')
     operating_mode = models.CharField(verbose_name='Режим работы', max_length=256)
@@ -89,6 +91,7 @@ class OperationEquipment(models.Model):
 
 
 class StageTP(models.Model):
+    """Стадии технологического регламента (процесса)"""
     name_tp = models.CharField(verbose_name='Наименование стадии', max_length=256)
     note = models.CharField(verbose_name='Примечание', max_length=256)
 
@@ -102,6 +105,7 @@ class StageTP(models.Model):
 
 
 class Operations(models.Model):
+    """Операция (относится к кокретной стадии ТП)"""
     stage_tp = models.ForeignKey('StageTP', on_delete=models.CASCADE, related_name='operations', verbose_name='Стадия ТП')
     operation_equipment = models.ForeignKey('OperationEquipment', on_delete=models.CASCADE, related_name='equipment_operation', verbose_name='Оборудование для операции')
     name = models.CharField(verbose_name='Наименование операции', max_length=256)
@@ -120,11 +124,23 @@ class Operations(models.Model):
 
 
 class Material(models.Model):
-    commodities = models.CharField(verbose_name='Вид сырья', max_length=256)
-    raw_material_brand = models.CharField(verbose_name='Марка сырья', max_length=256)
-    material = models.CharField(verbose_name='Материал', max_length=256)
-    name = models.CharField(verbose_name='Наименование сырья', max_length=256)
-    price = models.CharField(verbose_name='Цена за килограмм', max_length=256)
+    """Материалы  """
+
+    choices = (
+        ('Термопласт', 'Термопласт'),
+        ('Реактопласт', 'Реактопласт'),
+    )
+    name = models.CharField(verbose_name='Наименование сырья', max_length=256, default='')
+    commodities = models.CharField(verbose_name='Аббревиатура', max_length=256,default='')
+    raw_material_brand = models.CharField(verbose_name='Вид сырья', max_length=256, default='')
+    type = models.CharField(verbose_name='Тип', choices=choices, max_length=256, default='Термопласт', null=True)
+    price = models.CharField(verbose_name='Цена за килограмм', max_length=256, default='', null=True)
+    polar = models.CharField(verbose_name='Полярность', max_length=256, default='', null=True)
+    mass_mat = models.FloatField(verbose_name='Малярная масса полимера', max_length=256, default='', null=True)
+    mass_mat_monomer = models.FloatField(verbose_name='Малярная масса мономера', default='', null=True)
+    rec_moisture = models.FloatField(verbose_name='Рекомендуемая влажность после сушки (Градусы С)', default='', null=True)
+    PTR = models.FloatField(verbose_name='Показатель текучести расплава(г/10 мин', default='', null=True)
+    density = models.FloatField(verbose_name='Насыпная плотность(кг/м^2', default='', null=True)
 
     class Meta:
         """перевод для админпанели"""
@@ -132,11 +148,25 @@ class Material(models.Model):
         verbose_name_plural = 'Сырье'
 
     def __str__(self):
-        return self.commodities
+        name = self.commodities + " - " + self.name
+        return name
+
+
+class MaterialMix(models.Model):
+    """Таблица с указанием материалов для композиционных смесей"""
+    material = models.ManyToManyField('Material', verbose_name='Материал')
+    compositeMixture = models.ManyToManyField('CompositeMixture', verbose_name='Композитный материал', related_name='composite_mixture')
+    count = models.IntegerField(verbose_name='Количество материала в смеси, в %')
+
+
+class CompositeMixture(models.Model):
+    """Композитная смесь"""
+    name = models.CharField(max_length=256, verbose_name='Имя композицинонной смеси')
 
 
 class Product(models.Model):
-    material = models.ForeignKey('Material', on_delete=models.CASCADE, related_name='product', verbose_name='Материал')
+    """ Изготавливаемое Изделие """
+    material = models.ForeignKey('CompositeMixture', on_delete=models.CASCADE, related_name='product', verbose_name='Композитная смесь')
     var_list = (
         ('color1', 'Не имеет значения'),
         ('color2', 'Цвет 2'),
