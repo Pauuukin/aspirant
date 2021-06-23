@@ -132,15 +132,17 @@ class Material(models.Model):
     )
     name = models.CharField(verbose_name='Наименование сырья', max_length=256, default='')
     commodities = models.CharField(verbose_name='Аббревиатура', max_length=256,default='')
-    raw_material_brand = models.CharField(verbose_name='Вид сырья', max_length=256, default='')
-    type = models.CharField(verbose_name='Тип', choices=choices, max_length=256, default='Термопласт', null=True)
-    price = models.CharField(verbose_name='Цена за килограмм', max_length=256, default='', null=True)
-    polar = models.CharField(verbose_name='Полярность', max_length=256, default='', null=True)
-    mass_mat = models.FloatField(verbose_name='Малярная масса полимера', max_length=256, default='', null=True)
-    mass_mat_monomer = models.FloatField(verbose_name='Малярная масса мономера', default='', null=True)
-    rec_moisture = models.FloatField(verbose_name='Рекомендуемая влажность после сушки (Градусы С)', default='', null=True)
-    PTR = models.FloatField(verbose_name='Показатель текучести расплава(г/10 мин', default='', null=True)
-    density = models.FloatField(verbose_name='Насыпная плотность(кг/м^2', default='', null=True)
+    raw_material_brand = models.CharField(verbose_name='Вид сырья', max_length=256, default='', blank=True)
+    type = models.CharField(verbose_name='Тип', choices=choices, max_length=256, default='Термопласт')
+    price = models.CharField(verbose_name='Цена за килограмм', max_length=256, default='', blank=True)
+    polar = models.CharField(verbose_name='Полярность', max_length=256, default='', blank=True)
+    mass_mat = models.CharField(verbose_name='Малярная масса полимера', max_length=256, blank=True)
+    mass_mat_monomer = models.CharField(max_length=256, verbose_name='Малярная масса мономера',  null=True, blank=True)
+    rec_moisture = models.CharField(max_length=256, verbose_name='Рекомендуемая температура сушки (Градусы С)', blank=True)
+    PTR = models.CharField(max_length=256, verbose_name='Показатель текучести расплава(г/10 мин', default='', blank=True)
+    density = models.CharField(max_length=256, verbose_name='Насыпная плотность(кг/м^2)', default='', null=True)
+    elongation = models.CharField(max_length=256, verbose_name='Относительное удлинение при разрыве (%), не менее',
+                                  default='', null=True)
 
     class Meta:
         """перевод для админпанели"""
@@ -158,10 +160,21 @@ class MaterialMix(models.Model):
     compositeMixture = models.ManyToManyField('CompositeMixture', verbose_name='Композитный материал', related_name='composite_mixture')
     count = models.IntegerField(verbose_name='Количество материала в смеси, в %')
 
+    # def __str__(self):
+    #     template = '{0.id} {0.count}'
+    #     return template.format(self)
+
 
 class CompositeMixture(models.Model):
     """Композитная смесь"""
     name = models.CharField(max_length=256, verbose_name='Имя композицинонной смеси')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Композитная смесь'
+        verbose_name_plural = 'Композитные смеси'
 
 
 class Product(models.Model):
@@ -186,7 +199,7 @@ class Product(models.Model):
         ('7', 'Декор-ый цветной горшок'),
     )
 
-    color = models.CharField(verbose_name='Материал', max_length=256, choices=var_list)
+    color = models.CharField(verbose_name='Цвет', max_length=256, choices=var_list)
     product_tipe = models.CharField(verbose_name='Вид изделия', max_length=256, choices=var_list_tipe)
     name = models.CharField(verbose_name='Наименование изделия', max_length=256)
     nomenclature = models.CharField(verbose_name='Номенклатурный номер изделия', max_length=256)

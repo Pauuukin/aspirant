@@ -26,6 +26,10 @@ class CompositeMixtureAdmin(admin.ModelAdmin):
     """Регистрация модели для композитных смесей"""
     inlines = (MaterialMixInline,)
 
+@admin.register(MaterialMix)
+class CompositeMixtureAdmin(admin.ModelAdmin):
+    """Регистрация модели для композитных смесей"""
+    extra = 2
 
 
 
