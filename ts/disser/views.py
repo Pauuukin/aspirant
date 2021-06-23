@@ -20,7 +20,7 @@ def main_page(request):
 
     context = {}
     context['Equipment'] = Equipment.objects.all()
-    context['Material'] = Material.objects.all()
+    context['Composite'] = CompositeMixture.objects.all()
     context['Product'] = Product.objects.all()
     context['Equipment_l'] = Equipment.objects.filter(genus='tipe1')
     context['Equipment'] = Equipment.objects.all()
@@ -43,7 +43,6 @@ def calculate_page(request):
 
         context['product'] = request.POST['product']
         context['m1'] = request.POST['m1']
-        context['m2'] = request.POST['m2']
         context['count'] = request.POST['count']
         context['g'] = request.POST['g']
         context['eq_l'] = request.POST['eq_l']
@@ -62,10 +61,20 @@ def calculate_page(request):
         time_lit = (64.6*int(context['count']))/60/60
         context['time_lit'] = round(time_lit)
 
-        material1 = Material.objects.get(commodities=context['m1'])
-        material2 = Material.objects.get(commodities=context['m2'])
-        context ['price_product'] = (weight_product * float(context['count_1'])/100 * int(material1.price)
-                                     + weight_product * float(context['count_2'])/100 * int(material2.price))
+        # material1 = Material.objects.get(commodities=context['m1'])
+
+        cm = CompositeMixture.objects.get(name=context["m1"])
+        el = MaterialMix.objects.filter(compositeMixture=cm.id)
+        mat = []
+        for i in el:
+            mat = Material.objects.get(mix=i)
+        context['mat'] = mat
+        context['cm'] = cm
+        context['el'] = el
+
+
+        # context ['price_product'] = (weight_product * float(context['count_1'])/100 * int(material1.price)
+        #                              + weight_product * float(context['count_2'])/100 * int(material2.price))
 
         price_s = int(context['time_s']) * energy_price * 4.37
         context['price_s'] = round(price_s, 2)
@@ -85,12 +94,12 @@ def calculate_page(request):
         wages_lit = wages['lit'] * time_lit
         context['wages_lit'] = round(wages_lit, 2)
 
-        sum= wages_lit + wages_sush + wages_drob + price_d + price_s + \
-             float(context['price_product']) +price_lit +673 +1998 +131 + 1034
-        context['sum'] = round(sum, 2)
-
-        price_unit = sum / int(context['count'])
-        context['price_unit'] = round(price_unit, 2)
+        # sum= wages_lit + wages_sush + wages_drob + price_d + price_s + \
+        #      float(context['price_product']) +price_lit +673 +1998 +131 + 1034
+        # context['sum'] = round(sum, 2)
+        #
+        # price_unit = sum / int(context['count'])
+        # context['price_unit'] = round(price_unit, 2)
 
 
     return render(request, 'calculate.html', context=context)

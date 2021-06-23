@@ -24,31 +24,13 @@
             <hr>
             <div class="row">
                 <div class="col">
-                    <p>Материал 1</p>
+                    <p>Композитная смесь</p>
                     <select class="form-control mt-2 mb-3" name="m1">
-                        {% for m in Material %}
-                        <option>{{m.commodities}}</option>
+                        {% for m in Composite %}
+                        <option>{{m.name}}</option>
                         {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <p>Материал 2</p>
-                    <select class="form-control mt-2 mb-3" name="m2">
-                        {% for m in Material %}
-                        <option>{{m.commodities}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <hr>
-            <p class="text-center">Соотношение ( %, в сумме не больше 100):</p>
-            <div class="row">
 
-                <div class="col">
-                    <input class="form-control" name="count_1">
-                </div>
-                <div class="col">
-                    <input class="form-control" name="count_2">
+                    </select>
                 </div>
             </div>
             <hr>

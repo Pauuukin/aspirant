@@ -156,7 +156,7 @@ class Material(models.Model):
 
 class MaterialMix(models.Model):
     """Таблица с указанием материалов для композиционных смесей"""
-    material = models.ManyToManyField('Material', verbose_name='Материал')
+    material = models.ManyToManyField('Material', verbose_name='Материал', related_name='mix')
     compositeMixture = models.ManyToManyField('CompositeMixture', verbose_name='Композитный материал', related_name='composite_mixture')
     count = models.IntegerField(verbose_name='Количество материала в смеси, в %')
 
