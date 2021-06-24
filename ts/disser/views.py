@@ -67,14 +67,16 @@ def calculate_page(request):
         el = MaterialMix.objects.filter(compositeMixture=cm.id)
         mat = []
         for i in el:
-            mat = Material.objects.get(mix=i)
+            mat.append(Material.objects.get(id=i.material_id))
         context['mat'] = mat
         context['cm'] = cm
         context['el'] = el
+        price_product =0
 
-
-        # context ['price_product'] = (weight_product * float(context['count_1'])/100 * int(material1.price)
-        #                              + weight_product * float(context['count_2'])/100 * int(material2.price))
+        for i in mat:
+            for j in el:
+                price_product += (weight_product * float(j.count)/100 * int(i.price))
+        context ['price_product'] = price_product
 
         price_s = int(context['time_s']) * energy_price * 4.37
         context['price_s'] = round(price_s, 2)
@@ -94,12 +96,12 @@ def calculate_page(request):
         wages_lit = wages['lit'] * time_lit
         context['wages_lit'] = round(wages_lit, 2)
 
-        # sum= wages_lit + wages_sush + wages_drob + price_d + price_s + \
-        #      float(context['price_product']) +price_lit +673 +1998 +131 + 1034
-        # context['sum'] = round(sum, 2)
-        #
-        # price_unit = sum / int(context['count'])
-        # context['price_unit'] = round(price_unit, 2)
+        sum= wages_lit + wages_sush + wages_drob + price_d + price_s + \
+             float(context['price_product']) +price_lit +673 +1998 +131 + 1034
+        context['sum'] = round(sum, 2)
+
+        price_unit = sum / int(context['count'])
+        context['price_unit'] = round(price_unit, 2)
 
 
     return render(request, 'calculate.html', context=context)

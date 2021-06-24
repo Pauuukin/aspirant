@@ -16,8 +16,13 @@
             <table class="table table-border">
                 <td>
                     <tr><p>Изделие: <br><b>{{product}}</b></p></tr>
-                    <tr><p>Материал 1: <b>{{m1}}</b></p></tr>
-                    <tr><p>Материал 2: <b>{{m2}}</b></p></tr>
+                    <tr><p>Композитная смесь: <b>{{m1}}</b></p></tr>
+                    <tr><p>Составляющие композитной смеси:
+                        <b>
+                            {% for i in mat %}
+                                {{i.name}}<br>
+                            {% endfor %}
+                        </b></p></tr>
                     <tr><p>Штук в партии: <b>{{count}}</b></p></tr>
                     <tr><p>Гнездность: <b>{{g}}</b></p></tr>
                 </td>
@@ -110,19 +115,6 @@
                 </tr>
 
             </table>
-            {% for m in materials %}
-            materials i:{{m}}
-            {% endfor %}
-            <hr>
-            cm:{{cm}}
-            <hr>
-            {% for i in el%}
-                el:{{i.count}}<br>
-            {%endfor%}
-            <hr>
-            materials:{{materials}}
-            <hr>
-
         </div>
     </div>
 </div>

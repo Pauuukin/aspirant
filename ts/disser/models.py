@@ -154,17 +154,6 @@ class Material(models.Model):
         return name
 
 
-class MaterialMix(models.Model):
-    """Таблица с указанием материалов для композиционных смесей"""
-    material = models.ManyToManyField('Material', verbose_name='Материал', related_name='mix')
-    compositeMixture = models.ManyToManyField('CompositeMixture', verbose_name='Композитный материал', related_name='composite_mixture')
-    count = models.IntegerField(verbose_name='Количество материала в смеси, в %')
-
-    # def __str__(self):
-    #     template = '{0.id} {0.count}'
-    #     return template.format(self)
-
-
 class CompositeMixture(models.Model):
     """Композитная смесь"""
     name = models.CharField(max_length=256, verbose_name='Имя композицинонной смеси')
@@ -215,6 +204,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MaterialMix(models.Model):
+    """Таблица с указанием материалов для композиционных смесей"""
+    material = models.ForeignKey('Material', verbose_name='Материал', related_name='mix', on_delete=models.CASCADE)
+    compositeMixture = models.ForeignKey('CompositeMixture', verbose_name='Композитный материал',
+                                         related_name='composite_mixture', on_delete=models.CASCADE)
+    count = models.IntegerField(verbose_name='Количество материала в смеси, в %')
+
+    def __str__(self):
+        s = self.compositeMixture.name + " - " + self.material.name + "=" + str(self.count)+"%"
+        return s
+
+    class Meta:
+        verbose_name = 'композитную смесь из материалов'
+        verbose_name_plural = 'Композитные смеси из материалов'
 
 
 class TechnologicalMap(models.Model):

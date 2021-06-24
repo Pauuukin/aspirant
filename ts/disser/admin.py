@@ -15,17 +15,17 @@ class ManufacturerAdmin(admin.ModelAdmin):
     inlines = (ManufacturerInline, )
 
 
-class MaterialMixInline(admin.TabularInline):
-    model = CompositeMixture.composite_mixture.through
-    can_delete = False
-    extra = 1
+# class MaterialMixInline(admin.TabularInline):
+#     model = CompositeMixture
+#     can_delete = False
+#     extra = 1
 
 
 @admin.register(CompositeMixture)
 class CompositeMixtureAdmin(admin.ModelAdmin):
     """Регистрация модели для композитных смесей"""
-    inlines = (MaterialMixInline,)
-
+    # inlines = (MaterialMixInline,)
+    extra = 1
 
 @admin.register(MaterialMix)
 class CompositeMixtureAdmin(admin.ModelAdmin):
