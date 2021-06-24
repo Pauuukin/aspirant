@@ -1,0 +1,108 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Экономика
+{% endblock %}
+
+
+{% block content %}
+<div class="m-4">
+    <h3>Расчет экономических показателей изготовления изделия</h3>
+    <hr>
+    <form method="post" enctype="multipart/form-data" action="{% url 'calculate_page_url' %}">
+    {% csrf_token %}
+        <div class="row">
+
+        <div class="col-4">
+            <h3 class="text-center">Изделие:</h3>
+            <h4>Выберите изделие:</h4>
+            <select class="form-control select ol mt-2 mb-3" name="product">
+                {% for pr in Product %}
+                <option>{{pr.name}}</option>
+                {% endfor %}
+            </select>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <p>Композитная смесь</p>
+                    <select class="form-control mt-2 mb-3" name="m1">
+                        {% for m in Composite %}
+                        <option>{{m.name}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <p> Требуется покраска: <input type="checkbox" name="a" value="1"> (В разработке) </p>
+            <p>Штук в партии:  <input class="form-control" name="count"></p>
+            <p>Гнездность:  <input class="form-control" name="g"></p>
+        </div>
+
+        <div class="col-1"></div>
+        <div class="col-6 text-center">
+            <h3 class="text-center">Оборудование:</h3>
+            <div class="row">
+                <h4>Выберите оборудование:</h4>
+                <select class="form-control mt-2 mb-3" name="eq_l">
+                    {% for e in Equipment_l %}
+                    <option>{{e.name_e}}</option>
+                    {% endfor %}
+                </select>
+                <hr>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="card ">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne">
+                                Предварительная сушка
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne"  aria-expanded="false" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p> Требуется сушка: <input type="checkbox" name="s_check" value="1">  </p><br>
+                            <h5>Выберите оборудование:</h5>
+                            <select class="form-control mt-2 mb-3" name="eq_s">
+                                {% for e in Equipment_s %}
+                                <option>{{e.name_e}}</option>
+                                {% endfor %}
+
+                            </select>
+                            <p>Температура сушки (цельсия): <input class="form-control" name="temp"></p>
+                            <p>Время сушки(часы): <input class="form-control" name="time_s"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-controls="collapseTwo">
+                                Дробление материала
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" aria-expanded="false" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p> Требуется дробление: <input type="checkbox" name="d_check" value="1">  </p><br>
+                            <h5>Выберите оборудование:</h5>
+                            <select class="form-control mt-2 mb-3" name="eq_d">
+                                {% for e in Equipment_d %}
+                                <option>{{e.name_e}}</option>
+                                {% endfor %}
+                            </select>
+                            <p>Время дробления(часы): <input class="form-control" name="time_d"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-info btn-block m-4" type="submit">Рассчитать</button>
+        </div>
+
+    </div>
+    </form>
+</div>
+{% endblock %}

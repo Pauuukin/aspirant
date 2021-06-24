@@ -5,6 +5,7 @@ from .views import *
 
 urlpatterns = [
     path('', main_page, name='main_page_url'),
+    path('economic', economicView, name='economic_url'),
     path('calculate/', calculate_page, name='calculate_page_url'),
     path('manufacturer_add/', ManufacturerAddView.as_view(), name='manufacturer_add_url')
 ]

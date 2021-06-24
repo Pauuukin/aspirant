@@ -14,8 +14,11 @@ from .forms import *
 
 # Create your views here.
 
-
 def main_page(request):
+    return render(request, 'main.html')
+
+
+def economicView(request):
     """Передаем данные из БД на страницу расчета ТЭП"""
 
     context = {}
@@ -27,7 +30,7 @@ def main_page(request):
     context['Equipment_s'] = Equipment.objects.filter(genus='tipe3')
     context['Equipment_d'] = Equipment.objects.filter(genus='tipe2')
 
-    return render(request, 'main.html', context=context)
+    return render(request, 'economic.html', context=context)
 
 
 def calculate_page(request):
